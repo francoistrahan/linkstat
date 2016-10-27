@@ -2,7 +2,7 @@
 __all__ = [
     ]
 
-__version__ = "1.0.0-dev"
+__version__ = "1.0.0"
 
 def inall(obj) :
     __all__.append(obj.__name__)
