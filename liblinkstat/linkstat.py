@@ -1,6 +1,6 @@
 from collections import defaultdict
 from os import walk, stat
-from os.path import join
+from os.path import join, isfile
 from itertools import chain
 
 
@@ -21,8 +21,9 @@ class LinkStat :
             for fn in filenames :
                 if not any(r.match(fn) for r in self.exclude) :
                     fp = join(dirpath, fn)
-                    inode = stat(fp).st_ino
-                    yield inode, fp
+                    if isfile(fp):
+                        inode = stat(fp).st_ino
+                        yield inode, fp
                     
     def buildSet(self, folder) :
         fs = defaultdict(lambda : list())
