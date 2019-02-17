@@ -1,37 +1,30 @@
 #! /usr/bin/env python3
 
-from distutils.core import setup
-from os import umask
-
 from liblinkstat import __version__
+from setuptools import setup
 
 
-
-umask(0o022)
 
 setup(
     name='linkstat',
     version=__version__,
     description='Scipts to work with hard linked folder copies',
+    url='https://github.com/francoistrahan/linkstat',
+
     author='François Trahan',
     author_email='francois.trahan@gmail.com',
-    url='https://rm.ftrahan.com/projects/linkstat',
+
     packages=[
         "linkstat",
         ],
-    scripts=[
-        "linkonlyfolders",
-        "linkstat",
-        "listonce",
-        ],
-    #    data_files=[
-    #        (
-    #            "share/libftbackup/samples",
-    #            [
-    #                "samples/exclude.regex",
-    #                "samples/nocompress.regex",
-    #                "samples/prune.regex",
-    #                "samples/wraperscript",
-    #                ]),
-    #        ],
+
+    entry_points={
+        'console_scripts': [
+            'linkstat = linkstat.linkstat:main',
+            'listonce = linkstat.listonce:main',
+            'linkonlyfolders = linkstat.linkonlyfolders:main',
+            'stat = linkstat.stat:main',
+            ],
+        },
+
     )
