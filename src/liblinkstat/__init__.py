@@ -20,4 +20,4 @@ class ReportException(Exception) :
         super().__init__(*args)
         self.returnValue = returnValue
     
-from .linkstat import LinkStat
+from .stat import stat

@@ -4,7 +4,7 @@ from os.path import join, isfile
 from itertools import chain
 
 
-class LinkStat :    
+class stat :
     def __init__(self, folders, exclude) :
         self.folders = folders
         self.exclude = exclude
@@ -15,7 +15,7 @@ class LinkStat :
             Actions.UNIQUE:self.do_unique,
             }
 
-        
+
     def listInodesAndFiles(self, folder) :
         for dirpath, dirnames, filenames in walk(folder, followlinks=False) :
             for fn in filenames :
@@ -24,14 +24,14 @@ class LinkStat :
                     if isfile(fp):
                         inode = stat(fp).st_ino
                         yield inode, fp
-                    
+
     def buildSet(self, folder) :
         fs = defaultdict(lambda : list())
         for inode, fp in self.listInodesAndFiles(folder) :
             fs[inode].append(fp)
         self.sets[folder] = fs
 
-        
+
     def run(self, action) :
         for fp in self.folders :
             self.buildSet(fp)
@@ -54,15 +54,15 @@ class LinkStat :
     def do_or(self) :
         sets = [set(iandfs.keys()) for iandfs in self.sets.values()]
         first = sets.pop(0)
-        self.result_inodes = first.union(*sets)        
+        self.result_inodes = first.union(*sets)
 
-        
+
     def do_and(self) :
         sets = [set(iandfs.keys()) for iandfs in self.sets.values()]
         first = sets.pop(0)
-        self.result_inodes = first.intersection(*sets)        
+        self.result_inodes = first.intersection(*sets)
 
-        
+
     def do_unique(self) :
         counts = defaultdict(lambda: 0)
         for inode in chain(*(iandfs.keys() for iandfs in self.sets.values())) :
@@ -71,4 +71,4 @@ class LinkStat :
         self.result_inodes = list(inode for inode,count in counts.items() if count == 1)
 
 from . import Actions
-        
+
