@@ -1,8 +1,11 @@
 #! /usr/bin/env python3
 
-from os import umask
-from liblinkstat import __version__
 from distutils.core import setup
+from os import umask
+
+from liblinkstat import __version__
+
+
 
 umask(0o022)
 
@@ -21,14 +24,14 @@ setup(
         "linkstat",
         "listonce",
         ],
-#    data_files=[
-#        (
-#            "share/libftbackup/samples",
-#            [
-#                "samples/exclude.regex",
-#                "samples/nocompress.regex",
-#                "samples/prune.regex",
-#                "samples/wraperscript",
-#                ]),
-#        ],
+    #    data_files=[
+    #        (
+    #            "share/libftbackup/samples",
+    #            [
+    #                "samples/exclude.regex",
+    #                "samples/nocompress.regex",
+    #                "samples/prune.regex",
+    #                "samples/wraperscript",
+    #                ]),
+    #        ],
     )

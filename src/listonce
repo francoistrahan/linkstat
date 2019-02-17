@@ -1,16 +1,21 @@
 #! /usr/bin/python3
 
-from os import walk, stat
-from os.path import join, isfile
+from os import stat
+from os.path import isfile
+
 from liblinkstat import __version__, ReportException
 
-class App :
-    def __init__(self, source, destination) :
+
+
+class App:
+    def __init__(self, source, destination):
         self.source = source
         self.destination = destination
-    
-    def getOptions(self) :
+
+
+    def getOptions(self):
         from argparse import ArgumentParser
+
         parser = ArgumentParser(
             description="Read a file names from stdin and outputs only one (the first) name per inode",
             epilog="WARNING : Files must be on the same file system. Giving a non-existent file name will terminate listing.",
@@ -30,47 +35,53 @@ class App :
             )
 
         self.options = parser.parse_args()
-        if self.options.null :
+        if self.options.null:
             self.enumerator = self.enumerateByNull
             self.terminator = "\0"
-        else :
+        else:
             self.enumerator = self.enumerateByLine
             self.terminator = "\n"
 
 
-    def enumerateByNull(self) :
+    def enumerateByNull(self):
         fn = ""
-        while True :
+        while True:
             c = self.source.read(1)
-            if c =="" : break
-            elif c == "\0" :
+            if c == "":
+                break
+            elif c == "\0":
                 yield fn
                 fn = ""
             else:
-                fn += c            
-                
-    
-    def enumerateByLine(self) :        
-        for line in self.source :
+                fn += c
+
+
+    def enumerateByLine(self):
+        for line in self.source:
             yield line[:-1]
 
-    def enumerateUniques(self) :
+
+    def enumerateUniques(self):
         inodes = set()
-        for fn in self.enumerator() :
-            if not isfile(fn) :
+        for fn in self.enumerator():
+            if not isfile(fn):
                 raise ReportException(1, "Not a valid file : \"{}\"".format(fn))
             inode = stat(fn).st_ino
-            if inode not in inodes :
+            if inode not in inodes:
                 inodes.add(inode)
                 yield fn
-            
-    def printLines(self) :
-        for fn in self.enumerateUniques() :
+
+
+    def printLines(self):
+        for fn in self.enumerateUniques():
             print(fn, file=self.destination, end=self.terminator)
-    
-def main() :
+
+
+
+def main():
     from sys import stdin, stdout
-    try :
+
+    try:
         app = App(stdin, stdout)
         app.getOptions()
         app.printLines()
@@ -78,4 +89,6 @@ def main() :
         print(e)
         exit(e.returnValue)
 
-if __name__ == "__main__" : main()
+
+
+if __name__ == "__main__": main()
