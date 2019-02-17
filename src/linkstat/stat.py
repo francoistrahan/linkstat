@@ -1,6 +1,6 @@
 from collections import defaultdict
 from itertools import chain
-from os import stat, walk
+from os import walk, stat
 from os.path import isfile, join
 
 
@@ -23,7 +23,7 @@ class Stat:
                 if not any(r.match(fn) for r in self.exclude):
                     fp = join(dirpath, fn)
                     if isfile(fp):
-                        inode = Stat(fp).st_ino
+                        inode = stat(fp).st_ino
                         yield inode, fp
 
 

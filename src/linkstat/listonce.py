@@ -3,7 +3,7 @@
 from os import stat
 from os.path import isfile
 
-from liblinkstat import __version__, ReportException
+from . import __version__, ReportException
 
 
 

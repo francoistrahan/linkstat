@@ -2,7 +2,7 @@
 
 import re
 
-from liblinkstat import __version__, Actions, LinkStat
+from . import __version__, Actions, Stat
 
 
 
@@ -50,7 +50,7 @@ def getOptions():
 def getNonUniques(folders, exclude):
     last = folders.pop(0)
     for f in folders:
-        linkStat = LinkStat((last, f), exclude)
+        linkStat = Stat((last, f), exclude)
         linkStat.run(Actions.UNIQUE)
         if not linkStat.result:
             yield f

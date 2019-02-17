@@ -2,7 +2,7 @@
 
 import re
 
-from liblinkstat import __version__, Actions, LinkStat
+from . import __version__, Actions, Stat
 
 
 
@@ -74,7 +74,7 @@ def getOptions():
 
 def main():
     ops = getOptions()
-    linkStat = LinkStat(ops.FOLDERS, ops.exclude)
+    linkStat = Stat(ops.FOLDERS, ops.exclude)
     rv = linkStat.run(ops.action)
 
     for files in linkStat.result.values():
