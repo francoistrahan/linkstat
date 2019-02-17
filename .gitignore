@@ -1,3 +1,10 @@
-/build
+# Cache
 __pycache__
+
+# Jetbrain
 /.idea/workspace.xml
+
+# Packaging
+/src/build
+/src/dist
+/src/*.egg-info
