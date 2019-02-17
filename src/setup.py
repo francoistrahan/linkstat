@@ -17,7 +17,7 @@ setup(
     author_email='francois.trahan@gmail.com',
     url='https://rm.ftrahan.com/projects/linkstat',
     packages=[
-        "liblinkstat",
+        "linkstat",
         ],
     scripts=[
         "linkonlyfolders",
