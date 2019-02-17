@@ -31,4 +31,4 @@ class ReportException(Exception):
 
 
 
-from .stat import stat
+from .stat import Stat

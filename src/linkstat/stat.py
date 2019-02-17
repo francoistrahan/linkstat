@@ -5,7 +5,7 @@ from os.path import isfile, join
 
 
 
-class stat:
+class Stat:
     def __init__(self, folders, exclude):
         self.folders = folders
         self.exclude = exclude
@@ -23,7 +23,7 @@ class stat:
                 if not any(r.match(fn) for r in self.exclude):
                     fp = join(dirpath, fn)
                     if isfile(fp):
-                        inode = stat(fp).st_ino
+                        inode = Stat(fp).st_ino
                         yield inode, fp
 
 
