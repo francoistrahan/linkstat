@@ -1,10 +1,14 @@
 #! /usr/bin/python3
 
 import re
-from liblinkstat import Actions, LinkStat, __version__
 
-def getOptions() :
+from . import __version__, Actions, Stat
+
+
+
+def getOptions():
     from argparse import ArgumentParser
+
     prs = ArgumentParser(
         description="Compare folders and report on hard links",
         epilog="""WARNING : Both folders must be in the same file system.
@@ -16,7 +20,6 @@ def getOptions() :
         action="version",
         version=__version__
         )
-
 
     grp = prs.add_argument_group("Comparison action")
     actions = grp.add_mutually_exclusive_group(required=True)
@@ -47,7 +50,7 @@ def getOptions() :
         help="Exclude files whose name match the given regex",
         action="append",
         default=[],
-        )                             
+        )
 
     prs.add_argument(
         "FOLDER",
@@ -69,17 +72,20 @@ def getOptions() :
 
 
 
-def main() :
+def main():
     ops = getOptions()
-    linkStat = LinkStat(ops.FOLDERS, ops.exclude)
+    linkStat = Stat(ops.FOLDERS, ops.exclude)
     rv = linkStat.run(ops.action)
 
-    for files in linkStat.result.values() :
-        for f in files :
+    for files in linkStat.result.values():
+        for f in files:
             print(f)
 
-    if linkStat.result : exit(0)
-    else : exit(1)
-    
-if __name__ == "__main__" : main()
+    if linkStat.result:
+        exit(0)
+    else:
+        exit(1)
 
+
+
+if __name__ == "__main__": main()
