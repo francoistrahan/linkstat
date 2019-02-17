@@ -1,3 +1,7 @@
+from enum import IntEnum
+
+
+
 __all__ = [
     ]
 
@@ -12,7 +16,7 @@ def inall(obj):
 
 
 @inall
-class Actions:
+class Actions(IntEnum):
     OR = 1,
     AND = 2,
     UNIQUE = 3
