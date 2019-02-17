@@ -1,10 +1,14 @@
 #! /usr/bin/python3
 
 import re
-from liblinkstat import Actions, LinkStat, __version__
 
-def getOptions() :
+from . import __version__, Actions, Stat
+
+
+
+def getOptions():
     from argparse import ArgumentParser
+
     prs = ArgumentParser(
         description="List folders that include only links to files found in previous folders.",
         epilog="""WARNING : All folders must be in the same file system. Folders are compared with their predecessor, in the given order.""",
@@ -21,7 +25,7 @@ def getOptions() :
         help="Exclude files whose name match the given regex",
         action="append",
         default=[],
-        )                             
+        )
 
     prs.add_argument(
         "FOLDER",
@@ -41,21 +45,25 @@ def getOptions() :
 
     return ops
 
-def getNonUniques(folders, exclude) :
+
+
+def getNonUniques(folders, exclude):
     last = folders.pop(0)
-    for f in folders :
-        linkStat = LinkStat((last, f), exclude)
+    for f in folders:
+        linkStat = Stat((last, f), exclude)
         linkStat.run(Actions.UNIQUE)
-        if not linkStat.result :
+        if not linkStat.result:
             yield f
-        else :
+        else:
             last = f
-            
-def main() :
+
+
+
+def main():
     ops = getOptions()
-    for fp in getNonUniques(ops.FOLDERS, ops.exclude) :
+    for fp in getNonUniques(ops.FOLDERS, ops.exclude):
         print(fp)
 
-    
-if __name__ == "__main__" : main()
 
+
+if __name__ == "__main__": main()
