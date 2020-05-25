@@ -34,6 +34,13 @@ class App:
             default=False,
             )
 
+        parser.add_argument(
+            "-r", "--reverse",
+            help="Reverse the default behaviour: skip the first name per inode and give subsequent names",
+            action="store_true",
+            default=False,
+            )
+
         self.options = parser.parse_args()
         if self.options.null:
             self.enumerator = self.enumerateByNull
@@ -41,6 +48,8 @@ class App:
         else:
             self.enumerator = self.enumerateByLine
             self.terminator = "\n"
+
+        self.reverse = self.options.reverse
 
 
     def enumerateByNull(self):
@@ -69,7 +78,11 @@ class App:
             inode = stat(fn).st_ino
             if inode not in inodes:
                 inodes.add(inode)
+                if not self.reverse:
+                    yield fn
+            elif self.reverse:
                 yield fn
+                    
 
 
     def printLines(self):
